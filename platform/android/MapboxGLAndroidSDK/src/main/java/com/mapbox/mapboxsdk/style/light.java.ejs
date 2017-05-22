@@ -1,5 +1,4 @@
 <%
-  const type = locals.type;
   const properties = locals.properties;
   const doc = locals.doc;
 -%>
@@ -9,10 +8,14 @@ package com.mapbox.mapboxsdk.style;
 
 import android.support.annotation.UiThread;
 
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.TransitionOptions;
+import com.mapbox.mapboxsdk.style.layers.PropertyValue;
+
 /**
  * <%- doc %>
  *
- * @see <a href="https://www.mapbox.com/mapbox-gl-style-spec/#layers-<%- type %>">The online documentation</a>
+ * @see <a href="https://www.mapbox.com/mapbox-gl-style-spec/#light>">The online documentation</a>
  */
 @UiThread
 public class Light {
@@ -27,4 +30,43 @@ public class Light {
   public Light(long nativePtr) {
     this.nativePtr = nativePtr;
   }
+<% for (const property of properties) { -%>
+
+  /**
+   * Set the <%- camelize(property.name) %> property.
+   *
+   * @param <%- property.name %> as <%- propertyType(property) %>
+   */
+  public void set<%- camelize(property.name) %>(<%- propertyTypeAnnotation(property) %><%- iff(() => propertyTypeAnnotation(property), " ") %><%- propertyJavaType(property) %> <%- property.name %>) {
+    nativeSet<%- camelize(property.name) %>(<%- property.name %>);
+  }
+<% if (property.transition) { -%>
+
+  /**
+   * Get the <%- camelize(property.name) %> property transition options.
+   *
+   * @return transition options for <%- propertyType(property) %>
+   */
+  public TransitionOptions get<%- camelize(property.name) %>Transition() {
+    return nativeGet<%- camelize(property.name) %>Transition();
+  }
+
+  /**
+   * Set the <%- camelize(property.name) %> property transition options.
+   *
+   * @param options transition options for <%- propertyType(property) %>
+   */
+  public void set<%- camelize(property.name) %>Transition(TransitionOptions options) {
+    nativeSet<%- camelize(property.name) %>Transition(options.getDuration(), options.getDelay());
+  }
+<% } -%>
+<% } -%>
+
+<% for (const property of properties) { -%>
+  private native void nativeSet<%- camelize(property.name) %>(<%- propertyJavaType(property) %> property);
+<% if (property.transition) { -%>
+  private native TransitionOptions nativeGet<%- camelize(property.name) %>Transition();
+  private native void nativeSet<%- camelize(property.name) %>Transition(long duration, long delay);
+<% } -%>
+<% } -%>
 }
