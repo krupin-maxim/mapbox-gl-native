@@ -278,8 +278,7 @@ void Map::Impl::render(View& view) {
 
         painter->render(*style,
                         frameData,
-                        view,
-                        annotationManager->getSpriteAtlas());
+                        view);
 
         painter->cleanup();
 
@@ -312,8 +311,7 @@ void Map::Impl::render(View& view) {
 
         painter->render(*style,
                         frameData,
-                        view,
-                        annotationManager->getSpriteAtlas());
+                        view);
 
         auto request = std::move(stillImageRequest);
         request->callback(nullptr);
