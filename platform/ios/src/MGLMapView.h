@@ -1102,6 +1102,7 @@ IB_DESIGNABLE
  */
 - (void)selectAnnotation:(id <MGLAnnotation>)annotation animated:(BOOL)animated;
 
+- (void)setFrameInterval:(NSUInteger)frameInterval;
 /**
  Deselects an annotation and hides its callout view.
 

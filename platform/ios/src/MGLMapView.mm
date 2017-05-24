@@ -104,7 +104,7 @@ const double MGLMinimumZoomLevelForUserTracking = 10.5;
 /// Initial zoom level when entering user tracking mode from a low zoom level.
 const double MGLDefaultZoomLevelForUserTracking = 14.0;
 
-const NSUInteger MGLTargetFrameInterval = 1;  // Target FPS will be 60 divided by this value
+NSUInteger MGLTargetFrameInterval = 1;  // Target FPS will be 60 divided by this value
 
 /// Tolerance for snapping to true north, measured in degrees in either direction.
 const CLLocationDirection MGLToleranceForSnappingToNorth = 7;
@@ -1031,6 +1031,7 @@ public:
         }
 
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateFromDisplayLink)];
+        printf("Set frame interval");
         _displayLink.frameInterval = MGLTargetFrameInterval;
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
         _needsDisplayRefresh = YES;
@@ -3722,6 +3723,12 @@ public:
     {
         [self selectAnnotation:firstAnnotation animated:NO];
     }
+}
+
+- (void)setFrameInterval:(NSUInteger)frameInterval {
+    printf("Change frame interval");
+    MGLTargetFrameInterval = frameInterval;
+    _displayLink.frameInterval = MGLTargetFrameInterval;
 }
 
 - (void)selectAnnotation:(id <MGLAnnotation>)annotation animated:(BOOL)animated
